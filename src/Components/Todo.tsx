@@ -1,9 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { addTodo, deleteIndividualTodo } from "../features/todo/todoSlice";
+import {
+  addTodo,
+  deleteIndividualTodo,
+  edit,
+} from "../features/todo/todoSlice";
 
 export const Todo = () => {
-  const [inputData, setInputData] = useState();
+  const [inputData, setInputData] = useState("");
+  const [editTodo, setEditTodo] = useState({});
 
   const tasks = useSelector((state) => state.todo.allTodos);
   console.log(tasks, "tttttttt");
@@ -11,12 +16,35 @@ export const Todo = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(addTodo(inputData));
-    setInputData("");
+    if (editTodo.id) {
+      const updatedTask = tasks.map((a) => {
+        if (a.id === editTodo.id) {
+          return {
+            ...a,
+            id: editTodo.id,
+            title: inputData,
+          };
+        }
+        return a;
+      });
+
+      dispatch(edit(updatedTask));
+      setInputData("");
+    } else {
+      dispatch(addTodo(inputData));
+      setInputData("");
+    }
   };
 
   const handleDelete = (id) => {
     dispatch(deleteIndividualTodo(id));
+  };
+
+  const handleEdit = (id) => {
+    const edit = tasks.find((a) => a.id === id);
+    setEditTodo(edit);
+    setInputData(editTodo.title);
+    console.log(editTodo, "editTodo: id ra title xa");
   };
 
   const dispatch = useDispatch();
@@ -36,6 +64,7 @@ export const Todo = () => {
               <li>title:{item.title}</li>
               {/* <li>content:{item.content}</li> */}
               <button onClick={() => handleDelete(item.id)}>Delete</button>
+              <button onClick={() => handleEdit(item.id)}>Edit</button>
             </ul>
           );
         })}
