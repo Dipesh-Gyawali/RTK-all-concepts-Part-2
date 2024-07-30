@@ -5,10 +5,12 @@ import { addTodo, deleteIndividualTodo } from "../features/todo/todoSlice";
 export const Todo = () => {
   const [inputData, setInputData] = useState();
 
-  const tasks = useSelector((state) => state.todo);
-  console.log(tasks);
+  const tasks = useSelector((state) => state.todo.allTodos);
+  console.log(tasks, "tttttttt");
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
     dispatch(addTodo(inputData));
     setInputData("");
   };

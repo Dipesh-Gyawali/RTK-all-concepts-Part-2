@@ -1,18 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
 
-const initialState = [
-  {
-    id: 1,
-    title: "Hello",
-    // content: "Hi",
-  },
-  {
-    id: 2,
-    title: "Hello2",
-    //  content: "Hi2"
-  },
-];
+const initialState = {
+  allTodos: [
+    {
+      id: 1,
+      title: "Hello",
+      // content: "Hi",
+    },
+    {
+      id: 2,
+      title: "Hello2",
+      //  content: "Hi2"
+    },
+  ],
+};
 
 export const todoSlice = createSlice({
   name: "todo app ho",
@@ -23,15 +25,12 @@ export const todoSlice = createSlice({
         id: nanoid(),
         title: action.payload,
       };
-      state.push(newTask);
+      state.allTodos.push(newTask);
     },
     deleteIndividualTodo: (state, action) => {
-      //   state.todo.id.filter(action.payload)
-      //     ? action.payload !== state.todo.id
-      //     : "";
-      // },
-      console.log(state, "ss");
-      console.log(action.payload, "rrrrrrrr");
+      state.allTodos = state.allTodos.filter(
+        (item) => item.id !== action.payload
+      );
     },
   },
 });
