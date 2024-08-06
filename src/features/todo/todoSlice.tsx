@@ -33,7 +33,11 @@ export const todoSlice = createSlice({
       );
     },
     edit: (state, action) => {
-      state.allTodos = action.payload;
+      state.allTodos = state.allTodos.map((item) =>
+        item.id === action.payload.id
+          ? { ...item, id: action.payload.id, title: action.payload.title }
+          : item
+      );
     },
   },
 });

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   addTodo,
   deleteIndividualTodo,
@@ -17,19 +17,14 @@ export const Todo = () => {
     e.preventDefault();
 
     if (editTodo.id) {
-      const updatedTask = tasks.map((a) => {
-        if (a.id === editTodo.id) {
-          return {
-            ...a,
-            id: editTodo.id,
-            title: inputData,
-          };
-        }
-        return a;
-      });
-
-      dispatch(edit(updatedTask));
+      dispatch(
+        edit({
+          id: editTodo.id,
+          title: inputData,
+        })
+      );
       setInputData("");
+      setEditTodo({});
     } else {
       dispatch(addTodo(inputData));
       setInputData("");
